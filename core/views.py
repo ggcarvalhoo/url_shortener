@@ -11,7 +11,7 @@ def home(request):
     return render(request, 'home.html', {'form': form, 'status': status})
 
 
-def check_url(request, link):
+def check_url(request):
     form = FormLinks(request.POST)
 
     url_shortener = form.data['url_shortener']
@@ -22,12 +22,12 @@ def check_url(request, link):
     if form.is_valid():
         try:
             form.save()
-            return HttpResponse(f"URL has been created succesfully and it's: http://127.0.0.1:8000/{form.data['url_shortener']}")
+            return HttpResponse(f"URL has been created succesfully and it's: http://127.0.0.1:8000/url/{form.data['url_shortener']}")
         except:
             return HttpResponse("Unexpected error, try again please")
 
 
-def redirect(request, link):
+def redirect_url(request, link):
     links = Links.objects.filter(url_shortener=link)
     if len(links) == 0:
         return redirect('/')
